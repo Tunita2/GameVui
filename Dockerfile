@@ -4,9 +4,9 @@ WORKDIR /app
 COPY . .
 
 # Compile Java files
-RUN javac -d out src/**/*.java && \
-    echo "Main-Class: com.example.Main" > manifest.txt && \
-    jar -cvfm demo.jar manifest.txt -C out .
+RUN javac -d out src/main/MainClass.java && \
+    echo "Main-Class: MainClass" > manifest.txt && \
+    jar cvfm demo.jar manifest.txt -C out .
 
 # Run stage
 FROM openjdk:23-jdk-slim
