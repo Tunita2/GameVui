@@ -2,9 +2,11 @@
 FROM openjdk:23-jdk AS build
 WORKDIR /app
 COPY . .
-# Compile Java files và tạo JAR
+
+# Compile Java files
 RUN javac -d out src/**/*.java && \
-    jar -cvf demo.jar -C out .
+    echo "Main-Class: com.example.Main" > manifest.txt && \
+    jar -cvfm demo.jar manifest.txt -C out .
 
 # Run stage
 FROM openjdk:23-jdk-slim
