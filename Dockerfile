@@ -1,8 +1,12 @@
-FROM openjdk:23-jdk AS build
+# Build stage
+FROM maven:3.8.7-openjdk-23 AS build
+WORKDIR /app
 COPY . .
-RUN project clean package -DskipTests
+RUN mvn clean package -DskipTests
 
+# Run stage
 FROM openjdk:23-jdk-slim
-COPY --from=build /utilz/demo-0.0.1-SNAPSHOT.jar demo.jar
+WORKDIR /app
+COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar demo.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","demo.jar"]
+ENTRYPOINT ["java", "-jar", "demo.jar"]
